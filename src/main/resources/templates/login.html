@@ -102,14 +102,14 @@ body {
                 <p th:text="${error}"></p>
             </div>
 			<p class="text-white m-tb-45">TCA System</p>
-            <p class="text-white m-tb-15">Base on Bootstrap v3.3.7, Spring Boot v3.0, Java 17, Oracle 19c</p>
+            <p class="text-white m-tb-15">Base on Bootstrap v3.4.1, Spring Boot v3.0.4, Thymeleaf 3.1.1, Java 17, Oracle 19c</p>
             <p class="text-white">Copyright © 2023 All right reserved.</p>
         </div>
     </div>
 </div>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript">
+<div th:insert="~{common/script::footer}"></div>
+
+<script type="text/javascript" th:if="${enableCaptcha}">
     function getCaptchaImg() {
         let url = '/tca/getCaptchaImg';
         let xhr = new XMLHttpRequest();
