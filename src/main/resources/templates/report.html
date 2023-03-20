@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Report Page</title>
+    <div th:insert="~{common/link::header}"></div>
+</head>
+
+<body>
+<div class="lyear-layout-sidebar-scroll">
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header"><h4>Line Chart - 1</h4></div>
+                    <div class="card-body">
+                        <canvas id="chart-line-1" width="400" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header"><h4>Line Chart - 2</h4></div>
+                    <div class="card-body">
+                        <canvas id="chart-line-2" width="400" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header"><h4>Line Chart - 3</h4></div>
+                    <div class="card-body">
+                        <canvas id="chart-line-3" width="400" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header"><h4>Line Chart - 4</h4></div>
+                    <div class="card-body">
+                        <canvas id="chart-line-4" width="400" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header"><h4>Area Chat - 1</h4></div>
+                    <div class="card-body">
+                        <canvas id="chart-area-1" width="400" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header"><h4>Area Chat - 2</h4></div>
+                    <div class="card-body">
+                        <canvas id="chart-area-2" width="400" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header"><h4>Vertical Bar Chart - 1</h4></div>
+                    <div class="card-body">
+                        <canvas id="chart-vbar-1" width="400" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header"><h4>Vertical Bar Chart - 2</h4></div>
+                    <div class="card-body">
+                        <canvas id="chart-vbar-2" width="400" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header"><h4>Horizontal Bar Chart - 1</h4></div>
+                    <div class="card-body">
+                        <canvas id="chart-hbar-1" width="400" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header"><h4>Horizontal Bar Chart - 2</h4></div>
+                    <div class="card-body">
+                        <canvas id="chart-hbar-2" width="400" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header"><h4>Pie Chart</h4></div>
+                    <div class="card-body">
+                        <canvas id="chart-pie" width="280" height="280"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header"><h4>Doughnut Chart</h4></div>
+                    <div class="card-body">
+                        <canvas id="chart-doughnut" width="280" height="280"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header"><h4>Radar Chart</h4></div>
+                    <div class="card-body">
+                        <canvas id="chart-radar" width="360" height="360"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header"><h4>Polar Chart</h4></div>
+                    <div class="card-body">
+                        <canvas id="chart-polar" width="360" height="360"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header"><h4>Bubble CHart</h4></div>
+                    <div class="card-body">
+                        <canvas id="chart-bubble" width="280" height="280"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div th:insert="~{common/script::footer}"></div>
+
+<script type="text/javascript" src="js/Chart.js"></script>
+<script type="text/javascript">
+new Chart($("#chart-line-1"), {
+    type: 'line',
+    data: {
+        labels: ["Jan", "Feb", "Mar", "Apr"],
+        datasets: [
+            {
+                label: "Income",
+                fill: false,
+                borderWidth: 3,
+                pointRadius: 0,
+                data: [30, 25, 35, 23]
+            }
+        ]
+    },
+    options: {
+        legend: {
+            display: false
+        },
+    }
+});
+
+new Chart($("#chart-line-2"), {
+    type: 'line',
+    data: {
+        labels: ["Jan", "Feb", "Mar", "Apr"],
+        datasets: [{
+            label: "Income",
+            fill: false,
+            borderWidth: 3,
+            pointRadius: 5,
+            borderColor: "#9966ff",
+            pointBackgroundColor: "#9966ff",
+            pointBorderColor: "#9966ff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "#9966ff",
+            data: [30, 25, 35, 23]
+        }]
+    },
+    options: {
+        legend: {
+            display: false
+        },
+    }
+});
+
+new Chart($("#chart-line-3"), {
+    type: 'line',
+    data: {
+        labels: ["Jan", "Feb", "Mar", "Apr"],
+        datasets: [{
+            label: "Income",
+            fill: false,
+            backgroundColor: "#36a2eb",
+            borderColor: "#36a2eb",
+            borderWidth: 3,
+            pointRadius: 0,
+            data: [30, 25, 35, 23]
+        },
+        {
+            label: "Outcome",
+            fill: false,
+            borderColor: "#ff6384",
+            backgroundColor: "#ff6384",
+            borderWidth: 3,
+            pointRadius: 0,
+            data: [23, 29, 30, 33]
+        }]
+    },
+    options: {}
+});
+
+new Chart($("#chart-line-4"), {
+    type: 'line',
+    data: {
+        labels: ["Jan", "Feb", "Mar", "Apr"],
+        datasets: [{
+            label: "Income",
+            fill: false,
+            borderWidth: 3,
+            pointRadius: 4,
+            borderColor: "#36a2eb",
+            backgroundColor: "#36a2eb",
+            pointBackgroundColor: "#36a2eb",
+            pointBorderColor: "#36a2eb",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "#36a2eb",
+            data: [30, 25, 35, 23]
+        },
+        {
+            label: "Outcome",
+            fill: false,
+            borderWidth: 3,
+            pointRadius: 4,
+            borderColor: "#ff6384",
+            backgroundColor: "#ff6384",
+            pointBackgroundColor: "#ff6384",
+            pointBorderColor: "#ff6384",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "#ff6384",
+            data: [23, 29, 30, 33]
+        }]
+    },
+    options: {}
+});
+
+new Chart($("#chart-area-1"), {
+    type: 'line',
+    data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+        datasets: [{
+            label: "Income",
+            backgroundColor: "rgba(51,202,185,0.5)",
+            borderWidth: 0,
+            borderColor: "rgba(0,0,0,0)",
+            data: [0, 59, 80, 58, 20, 55, 40]
+        }]
+    },
+    options: {
+        legend: {
+            display: false
+        },
+    }
+});
+
+new Chart($("#chart-area-2"), {
+    type: 'line',
+    data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+        datasets: [{
+            label: "Income",
+            backgroundColor: "rgba(51,202,185,0.5)",
+            borderColor: "rgba(0,0,0,0)",
+            pointBackgroundColor: "rgba(51,202,185,0.5)",
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "rgba(51,202,185,0.5)",
+            data: [0, 59, 80, 58, 20, 55, 40]
+        },
+        {
+            label: "Outcome",
+            backgroundColor: "rgba(243,245,246,0.8)",
+            borderColor: "rgba(0,0,0,0)",
+            pointBackgroundColor: "rgba(243,245,246,0.8)",
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "rgba(243,245,246,0.8)",
+            data: [28, 48, 40, 19, 86, 27, 90]
+        }]
+    },
+    options: {}
+});
+
+new Chart($("#chart-vbar-1"), {
+    type: 'bar',
+    data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+        datasets: [{
+            label: "Income",
+            backgroundColor: "rgba(51,202,185,0.5)",
+            borderColor: "rgba(0,0,0,0)",
+            hoverBackgroundColor: "rgba(51,202,185,0.7)",
+            hoverBorderColor: "rgba(0,0,0,0)",
+            data: [10, 59, 80, 58, 20, 55, 40]
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+
+new Chart($("#chart-vbar-2"), {
+    type: 'bar',
+    data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+        datasets: [{
+            label: "Income",
+            backgroundColor: "rgba(51,202,185,0.5)",
+            borderColor: "rgba(0,0,0,0)",
+            hoverBackgroundColor: "rgba(51,202,185,0.7)",
+            hoverBorderColor: "rgba(0,0,0,0)",
+            data: [10, 59, 80, 58, 20, 55, 40]
+        },
+        {
+            label: "Outcome",
+            backgroundColor: "rgba(243,245,246,0.8)",
+            borderColor: "rgba(0,0,0,0)",
+            hoverBackgroundColor: "rgba(238,239,240,1)",
+            hoverBorderColor: "rgba(0,0,0,0)",
+            data: [28, 48, 40, 19, 86, 27, 90]
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+
+new Chart($("#chart-hbar-1"), {
+    type: 'horizontalBar',
+    data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+        datasets: [{
+            label: "Income",
+            backgroundColor: "rgba(51,202,185,0.5)",
+            borderColor: "rgba(0,0,0,0)",
+            hoverBackgroundColor: "rgba(51,202,185,0.7)",
+            hoverBorderColor: "rgba(0,0,0,0)",
+            data: [10, 59, 80, 58, 20, 55, 40]
+        }]
+    },
+    options: {
+        scales: {
+            xAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+
+new Chart($("#chart-hbar-2"), {
+    type: 'horizontalBar',
+    data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+        datasets: [{
+            label: "Income",
+            backgroundColor: "rgba(51,202,185,0.5)",
+            borderColor: "rgba(0,0,0,0)",
+            hoverBackgroundColor: "rgba(51,202,185,0.7)",
+            hoverBorderColor: "rgba(0,0,0,0)",
+            data: [10, 59, 80, 58, 20, 55, 40]
+        },
+        {
+            label: "Outcome",
+            backgroundColor: "rgba(243,245,246,0.8)",
+            borderColor: "rgba(0,0,0,0)",
+            hoverBackgroundColor: "rgba(238,239,240,1)",
+            hoverBorderColor: "rgba(0,0,0,0)",
+            data: [28, 48, 40, 19, 86, 27, 90]
+        }]
+    },
+    options: {
+        scales: {
+            xAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+
+new Chart($("#chart-radar"), {
+    type: 'radar',
+    data: {
+        labels: ["Food", "Drink", "Sleep", "Design", "Coding", "Riding", "Sport"],
+        datasets: [{
+            label: "ZhangSan",
+            backgroundColor: "rgba(51,202,185,0.7)",
+            borderColor: "rgba(0,0,0,0)",
+            pointBackgroundColor: "rgba(51,202,185,0.7)",
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "rgba(51,202,185,0.7)",
+            data: [65, 59, 90, 81, 56, 55, 40]
+        },
+        {
+            label: "LiSi",
+            backgroundColor: "rgba(72,176,247,0.7)",
+            borderColor: "rgba(0,0,0,0)",
+            pointBackgroundColor: "rgba(72,176,247,0.7)",
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "rgba(72,176,247,0.7)",
+            data: [28, 48, 40, 19, 96, 27, 100]
+        }]
+    },
+    options: {
+        responsive: false,
+        legend: {
+            display: false
+        }
+    }
+});
+
+new Chart($("#chart-polar"), {
+    type: 'polarArea',
+    data: {
+        datasets: [{
+            data: [11, 16, 7, 3, 14],
+            backgroundColor: ['rgba(255,99,132,0.95)', 'rgba(75, 192, 192, 0.95)', 'rgba(255, 159, 64, 0.95)', 'rgba(231, 233, 237, 0.95)', 'rgba(54, 162, 235, 0.95)'],
+            label: 'My dataset' // for legend
+        }],
+        labels: ["Red", "Green", "Orange", "Gray", "Blue"]
+    },
+    options: {
+        responsive: false,
+        legend: {
+            display: false
+        }
+    }
+});
+
+new Chart($("#chart-pie"), {
+    type: 'pie',
+    data: {
+        labels: ["Red", "Blue", "Orange"],
+        datasets: [{
+            data: [300, 50, 100],
+            backgroundColor: ['rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)']
+        }]
+    },
+    options: {
+        responsive: false
+    }
+});
+
+new Chart($("#chart-doughnut"), {
+    type: 'doughnut',
+    data: {
+        labels: ["Red", "Blue", "Orange"],
+        datasets: [{
+            data: [300, 50, 100],
+            backgroundColor: ['rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)']
+        }]
+    },
+    options: {
+        responsive: false
+    }
+});
+
+new Chart($("#chart-bubble"), {
+    type: 'bubble',
+    data: {
+        datasets: [{
+            label: 'Pink',
+            data: [{
+                x: 8,
+                y: 24,
+                r: 18
+            },
+            {
+                x: 20,
+                y: 30,
+                r: 15
+            },
+            {
+                x: 40,
+                y: 10,
+                r: 10
+            }],
+            backgroundColor: "#ff6384",
+            hoverBackgroundColor: "#ff6384",
+        },
+        {
+            label: 'Blue',
+            data: [{
+                x: 10,
+                y: 35,
+                r: 5
+            },
+            {
+                x: 5,
+                y: 5,
+                r: 20
+            },
+            {
+                x: 30,
+                y: 15,
+                r: 10
+            }],
+            backgroundColor: "#36a2eb",
+            hoverBackgroundColor: "#36a2eb",
+        },
+        {
+            label: 'Yellow',
+            data: [{
+                x: 17,
+                y: 21,
+                r: 8
+            },
+            {
+                x: 25,
+                y: 15,
+                r: 12
+            },
+            {
+                x: 12,
+                y: 31,
+                r: 16
+            }],
+            backgroundColor: "#ffce56",
+            hoverBackgroundColor: "#ffce56",
+        },
+        ]
+    },
+    options: {
+        legend: {
+            display: false
+        },
+
+        scales: {
+            xAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }],
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>
+</body>
+</html>

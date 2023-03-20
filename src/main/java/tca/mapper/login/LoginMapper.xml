@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tca.mapper.login.LoginMapper">
+	<resultMap type="tca.entity.user.User" id="userLoginMap">
+		<result property="id" column="id" />
+		<result property="loginId" column="login_id" />
+		<result property="name" column="name" />
+		<result property="email" column="email" />
+		<result property="contact" column="contact" />
+	</resultMap>
+	<select id="findByLoginId" parameterType="String" resultMap="userLoginMap"> select id, login_id,
+        name, email, contact from users where upper(login_id) = upper(#{userid}) and is_deleted = 0 </select>
+
+	<select id="validateUser" parameterType="String" resultType="java.lang.Boolean">
+        select count(id) from users
+        where is_deleted = 0 and upper(login_id) = upper(#{userId})
+        and is_locked = 0 and password = #{password}
+    </select>
+    <update id="saveProfile">
+		update users set name = #{name}, email = #{email}, contact = #{contact}, updated_by = #{loginId}, updated_at = CURRENT_TIMESTAMP
+		where upper(login_id) = upper(#{loginId})
+	</update>
+	<update id="savePassword">
+		update users set password = #{password}, updated_by = #{loginId}, updated_at = CURRENT_TIMESTAMP
+		where upper(login_id) = upper(#{loginId})
+	</update>
+</mapper>

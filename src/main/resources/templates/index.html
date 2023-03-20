@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>TCA Dashboard</title>
+    <div th:insert="~{common/link::header}"></div>
+</head>
+
+<body>
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <!--Side Bar-->
+        <aside class="lyear-layout-sidebar">
+
+            <!-- logo -->
+            <div id="logo" class="sidebar-header">
+                <span>TCA</span>
+                <!-- <a href="index"><img src="images/logo-sidebar.png" title="LightYear" alt="LightYear"/></a>-->
+            </div>
+            <div class="lyear-layout-sidebar-scroll">
+                <nav class="sidebar-main">
+                    <ul class="nav nav-drawer">
+                        <li sec:authorize="isAuthenticated()" class="nav-item active">
+                            <a href="dashboard" target="mainIframe"><i class="mdi mdi-home"></i>
+                            Dashboard</a>
+                        </li>
+                        <li sec:authorize="hasRole('ROLE_ENQUIRY')" class="nav-item">
+                            <a href="enquiry" target="mainIframe"><i
+                            class="mdi mdi-format-align-justify"></i> TCA
+                            Enquiry</a>
+                        </li>
+                        <li sec:authorize="hasRole('ROLE_REPORT')" class="nav-item"><a href="report" target="mainIframe"><i class="mdi mdi-palette"></i> TCA
+                            Reports</a>
+                        </li>
+                        <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item"><a href="user_management" target="mainIframe"><i
+                            class="mdi mdi-account-multiple"></i> User
+                            Management</a>
+                        </li>
+                        <li class="nav-item"><a href="logout"><i class="mdi mdi-logout-variant"></i> LOGOUT</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+        </aside>
+        <!--End Side Bar-->
+
+        <!--Head Info-->
+        <header class="lyear-layout-header">
+
+            <nav class="navbar navbar-default">
+                <div class="topbar">
+
+                    <div class="topbar-left">
+                        <div class="lyear-aside-toggler">
+                            <span class="lyear-toggler-bar"></span>
+                            <span class="lyear-toggler-bar"></span>
+                            <span class="lyear-toggler-bar"></span>
+                        </div>
+                        <span class="navbar-page-title"> Dashboard </span>
+                    </div>
+
+                    <ul class="topbar-right">
+                        <li class="dropdown dropdown-profile">
+                            <a href="javascript:void(0)" data-toggle="dropdown">
+                                <span sec:authentication="principal.username">XXX User</span>
+<!--                                <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>-->
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a href="profile" target="mainIframe"><i class="mdi mdi-account"></i> Profile</a>
+                                </li>
+                                <li><a href="edit_pwd" target="mainIframe"><i class="mdi mdi-lock-outline"></i> Change
+                                    Pass</a>
+                                </li>
+                                <li><a onclick="clearCache();"><i class="mdi mdi-delete"></i> Clear Cache</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li><a href="logout"><i class="mdi mdi-logout-variant"></i> LOGOUT</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+            </nav>
+
+        </header>
+        <!--End Head Info-->
+
+        <!--Main Content-->
+
+        <main class="lyear-layout-content">
+            <iframe id="mainIframe" name="mainIframe" style="resize:both; min-height:1000px;" title="main content"
+                    src="dashboard"
+                    width="100%"
+                    onload='document.getElementById("mainIframe").width = document.documentElement.clientWidth - 240px;'
+                    frameborder="0" scrolling="auto"></iframe>
+        </main>
+        <!--End Main Content-->
+    </div>
+</div>
+
+<div th:insert="~{common/script::footer}"></div>
+
+<script>
+jQuery( function() {
+    $(".nav-item").click(function(){
+        $(".nav-item").removeClass("active");
+        $(this).addClass("active");
+        $(".navbar-page-title").text($(this).find("a").text());
+    });
+});
+function clearCache(){
+    window.location.reload(true);
+}
+</script>
+</body>
+</html>

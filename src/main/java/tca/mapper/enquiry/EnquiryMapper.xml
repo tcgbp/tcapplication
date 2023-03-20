@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tca.mapper.enquiry.EnquiryMapper">
+	<resultMap id="BaseResultMap" type="tca.entity.enquiry.Request">
+		<result column="id" property="id" />
+		<result column="request_id" property="reqId" />
+		<result column="name" property="name" />
+		<result column="request_type" property="type" />
+		<result column="content" property="content" />
+		<result column="created_at" property="createdAt" />
+		<result column="created_by" property="createdBy" />
+	</resultMap>
+	<select id="getRequestList" resultMap="BaseResultMap">
+		select * from requests where 1 = 1
+		<if test=" search != null and search != '' ">
+            and (name like '%${search}%' or content like '%${search}%')
+        </if>
+		order by ${sort} ${order}
+		offset #{offset} ROWS fetch first #{limit} row only
+	</select>
+	<select id="getTotalCount" parameterType="String" resultType="long">select count(1) from requests 
+		where (name like '%${search}%' or content like '%${search}%')</select>
+	<select id="getTotalNotFilteredCount" resultType="long">select count(1) from requests</select>
+</mapper>

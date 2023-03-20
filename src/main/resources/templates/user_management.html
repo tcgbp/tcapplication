@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>User Management</title>
+    <div th:insert="~{common/link::header}"></div>
+</head>
+
+<body>
+<div class="lyear-layout-sidebar-scroll">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="toolbar" class="toolbar-btn-action">
+                            <a class="btn btn-primary m-r-5" href="user_new"><i class="mdi mdi-plus"></i> Add</a>
+                            <a class="btn btn-danger" onclick="removeUsers();"><i class="mdi mdi-window-close"></i>
+                                Delete</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="dtb" class="table table-hover"
+                                   data-toggle="table"
+                                   data-toolbar="#toolbar"
+                                   data-url="users"
+                                   data-show-columns="true"
+                                   data-search="false"
+                                   data-show-search-button="false"
+                                   data-show-refresh="true"
+                                   data-show-toggle="false"
+                                   data-show-export="true"
+                                   data-show-fullscreen="true"
+                                   data-click-to-select="true"
+                                   data-page-size="50"
+                                   data-show-columns-toggle-all="false"
+                                   data-export-types="['json', 'xml', 'csv', 'txt', 'sql', 'excel']"
+                                   data-height="100%"
+                                   data-id-field="id"
+                                   data-detail-view="true"
+                                   data-detail-view-icon="false"
+                                   data-detail-view-by-click="false"
+                                   data-detail-formatter="detailFormatter"
+                                   data-checkbox-header="true"
+                                   data-side-pagination="server"
+                                   data-show-pagination-switch="false"
+                                   data-pagination="true"
+                                   data-buttons-class="primary"
+                                   data-page-list="[5, 10, 20, 50, 100, 200]"
+                                   data-sort-name="last_login_at"
+                                   data-sort-order="desc"
+                                   data-filter-control="true"
+                                   data-search-on-enter-key="false"
+                                   data-show-search-clear-button="true"
+                                   data-show-filter-control-switch="true"
+                                   data-filter-control-visible="true"
+                                   data-sort-select-options="false"
+                                   data-filter-strict-search="true"
+                                   data-filter-control-multiple-search="true">
+                                <thead>
+                                <tr>
+                                    <th data-field="state" data-checkbox="true"></th>
+                                    <th data-field="loginId" data-formatter="loginIdFormatter"
+                                        data-filter-control-placeholder="search on id"
+                                        data-filter-control="input">SOE ID
+                                    </th>
+                                    <th data-field="name" data-formatter="nameFormatter" data-filter-control="input"
+                                        data-filter-control-placeholder="search on name">Name
+                                    </th>
+
+                                    <!--data-filter-control-container="organizationsFilter"-->
+                                    <th data-field="orgName" data-filter-control="select"
+                                        data-filter-data="func:orgSelectData"
+                                        data-filter-control-placeholder="search on organisation">Organisation
+                                    </th>
+                                    <th data-field="roles" data-formatter="roleFormatter">Roles
+                                    </th>
+                                    <th data-field="locked" data-formatter="lockedFormatter"
+                                        data-filter-control-placeholder="search on status"
+                                        data-filter-data="func:accountStatusSelectData"
+                                        data-filter-control="select">Account Locked
+                                    </th>
+                                    <th data-field="createdAt" data-formatter="dateFormatter"
+                                        data-sortable="false">Created Date
+                                    </th>
+                                    <th data-field="updatedAt" data-formatter="dateFormatter"
+                                        data-sortable="false">Modified Date
+                                    </th>
+                                    <th data-field="lastLoginAt" data-formatter="dateFormatter"
+                                        data-sortable="false">Last Login Date
+                                    </th>
+                                    <!--<th data-field="action">Action</th>-->
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+<!--                <select class="form-control bootstrap-table-filter-control-orgName" id="organizationsFilter"-->
+<!--                        name="orgId">-->
+<!--                    <option th:each="org : ${organizations}" th:value="${org.id}" th:text="${org.name}"></option>-->
+<!--                </select>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:insert="~{common/script::footer}"></div>
+<script type="text/javascript">
+		$(function () {
+			$('.search-bar .dropdown-menu a').click(function () {
+				var field = $(this).data('field') || '';
+				$('#search-field').val(field);
+				$('#search-btn').html($(this).text() + ' <span class="caret"></span>');
+			});
+		});
+
+		function dateFormatter(value, row, index) {
+			return moment(value).format("YYYY-MM-DD hh:mm:ss a");
+		}
+
+		function hideIdFormatter(value, row, index) {
+			return "<input type='hidden' value=" + value + " name='id' />";
+		}
+
+		function nameFormatter(value, row, index) {
+		    return "<a href='user_edit?id=" + row.id + "'>" + value + "</a>";
+		}
+
+		function loginIdFormatter(value, row, index) {
+		    return "<a href='user_edit?id=" + row.id + "'>" + value + "</a>";
+		}
+
+		function detailFormatter(index, row) {
+			var html = []
+			$.each(row, function (key, value) {
+				if (key === 'state' || key === 'password') {
+					// hide state, password
+				} else if (key === 'roles') {
+					var roleshtml = [];
+					for (let i = 0; i < value.length; i++) {
+						roleshtml.push(value[i].name);
+					}
+					let roles = roleshtml.join(',');
+					html.push('<p><b>' + key + ':</b> ' + roles + '</p>');
+				} else if (key === 'locked') {
+					if (value == 1)
+						html.push('<p><b>' + key + ':</b> Yes</p>');
+					else
+						html.push('<p><b>' + key + ':</b> No</p>');
+				} else {
+					html.push('<p><b>' + key + ':</b> ' + value + '</p>');
+				}
+			})
+			return html.join('');
+		}
+
+		function orgFormatter(value, row, index) {
+		    var html = [];
+			for (let i = 0; i < value.length; i++) {
+				html.push(value[i].name.replace('ROLE_',''));
+			}
+			return html.join(',');
+		}
+
+		function roleFormatter(value, row, index) {
+			var html = [];
+			for (let i = 0; i < value.length; i++) {
+				html.push(value[i].name.replace('ROLE_',''));
+			}
+			return html.join(',');
+		}
+
+		function lockedFormatter(value, row, index) {
+			if (value == 1)
+				return '<label class="lyear-switch switch-solid switch-cyan"><input type="checkbox" disabled ><span></span></label>';
+			else
+				return '<label class="lyear-switch switch-solid switch-cyan"><input type="checkbox" disabled checked=""><span></span></label>';
+		}
+
+
+
+		function removeUsers() {
+			var ids = $.map($("#dtb").bootstrapTable('getSelections'), function (row) {
+				console.log("select row id: " + row.id);
+				return row.id
+			})
+			var request = $.ajax({
+			  url: "removeUsers",
+			  method: "POST",
+			  data: { ids : ids },
+			  dataType: "json"
+			});
+
+			request.done(function( msg ) {
+			  console.log( msg );
+			});
+
+			request.fail(function( jqXHR, textStatus ) {
+			  console.log( "Request failed: " + textStatus );
+			});
+			$("#dtb").bootstrapTable('remove', {
+				field: 'id',
+				values: ids
+			})
+			return false;
+		}
+
+        function orgSelectData (){
+            return {'Org A':'Org A', 'Org B':'Org B', 'Org C':'Org C'};
+        }
+
+        function accountStatusSelectData (){
+            return {'0':'Unlocked', '1':'Locked'};
+        }
+
+
+</script>
+</body>
+
+</html>
