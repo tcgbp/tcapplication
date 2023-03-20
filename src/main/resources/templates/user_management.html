@@ -15,7 +15,7 @@
                     <div class="card-body">
                         <div id="toolbar" class="toolbar-btn-action">
                             <a class="btn btn-primary m-r-5" href="user_new"><i class="mdi mdi-plus"></i> Add</a>
-                            <a class="btn btn-danger" onclick="removeUsers();"><i class="mdi mdi-window-close"></i>
+                            <a class="btn btn-danger" id="deleteBtn"><i class="mdi mdi-window-close"></i>
                                 Delete</a>
                         </div>
                         <div class="table-responsive">
@@ -50,7 +50,7 @@
                                    data-sort-order="desc"
                                    data-filter-control="true"
                                    data-search-on-enter-key="false"
-                                   data-show-search-clear-button="true"
+                                   data-show-search-clear-button="false"
                                    data-show-filter-control-switch="true"
                                    data-filter-control-visible="true"
                                    data-sort-select-options="false"
@@ -178,7 +178,25 @@
 				return '<label class="lyear-switch switch-solid switch-cyan"><input type="checkbox" disabled checked=""><span></span></label>';
 		}
 
-
+        $('#deleteBtn').on('click', function () {
+            $.confirm({
+                title: 'Warning',
+                content: 'Confirm to delete?',
+                type: 'orange',
+                typeAnimated: false,
+                buttons: {
+                    confirm: {
+                        text: 'Confirm',
+                        action: function(){
+                            removeUsers();
+                        }
+                    },
+                    close: {
+                        text: 'Cancel',
+                    }
+                }
+            });
+        });
 
 		function removeUsers() {
 			var ids = $.map($("#dtb").bootstrapTable('getSelections'), function (row) {

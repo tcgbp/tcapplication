@@ -103,7 +103,7 @@
             <artifactId>jquery</artifactId>
             <version>3.6.4</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>org.webjars.npm</groupId>
             <artifactId>jquery-confirm</artifactId>
             <version>3.3.4</version>
@@ -112,7 +112,7 @@
             <groupId>org.webjars.npm</groupId>
             <artifactId>tableexport.jquery.plugin</artifactId>
             <version>1.26.0</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.webjars.npm</groupId>
             <artifactId>bootstrap-table</artifactId>

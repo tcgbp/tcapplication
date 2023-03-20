@@ -15,35 +15,35 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @SuppressWarnings("deprecation")
 @EnableWebSecurity
-@EnableMethodSecurity( jsr250Enabled = true )
+@EnableMethodSecurity(jsr250Enabled = true)
 @Configuration
 public class SecurityConfig {
 
-	@Bean
+    @Bean
     public TCAAuthenticationFilter getTCAAuthenticationFilter() {
         return new TCAAuthenticationFilter();
     }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/","/webjars/**","/favicon.ico","/images/**","/css/*","/js/**","/fonts/*");
+        return (web) -> web.ignoring().requestMatchers("/", "/webjars/**", "/favicon.ico", "/images/**", "/css/*", "/js/**", "/fonts/*");
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .headers().frameOptions().sameOrigin().and()
             .csrf().disable()
-            .formLogin().loginPage("/login.html").permitAll().and()
-            .logout().logoutSuccessUrl("/").and()
-            .exceptionHandling().accessDeniedPage("/403.html").and()
+            .headers(headers -> headers.frameOptions().sameOrigin())
+            .formLogin(formLogin -> formLogin.loginPage("/login.html").permitAll())
+            .logout(logout -> logout.logoutSuccessUrl("/"))
+            .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedPage("/403.html"))
             .addFilterBefore(new SecurityContextPersistenceFilter(), UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(getTCAAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
             .authorizeHttpRequests((authz) -> authz
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/enquiry/**").hasRole("ENQUIRY")
                 .requestMatchers("/report/**").hasRole("REPORT")
-                .requestMatchers("/login","/userLogin","/getCaptchaImg").permitAll()
+                .requestMatchers("/login", "/userLogin", "/getCaptchaImg").permitAll()
                 .anyRequest().authenticated()
             )
             .httpBasic(withDefaults());
