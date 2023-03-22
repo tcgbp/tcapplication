@@ -43,6 +43,30 @@
         update users set login_id = #{loginId}, name = #{name}, email = #{email}, contact = #{contact},
         password = #{password}, updated_by = #{updatedBy}, updated_at = CURRENT_TIMESTAMP where id = #{id}
     </update>
+    <select id="getTotalCount" resultType="long">
+        select count(1) from users u
+        inner join organizations o on u.org_id = o.id
+        where u.is_deleted = 0
+        <if test=" search != null and search != '' ">
+            and (u.name like '%${search}%' or u.login_id or u.contact like '%${search}%'
+            or o.name like '%${search}%') or u.email like '%${search}%')
+        </if>
+        <if test=" filter != null ">
+            <if test=" filter.loginId != null and filter.loginId != '' ">
+                and u.login_id like '%${filter.loginId}%'
+            </if>
+            <if test=" filter.name != null and filter.name != '' ">
+                and u.name like '%${filter.name}%'
+            </if>
+            <if test=" filter.orgName != null and filter.orgName != '' ">
+                and o.name like '%${filter.orgName}%'
+            </if>
+            <if test=" filter.locked != null and filter.locked != '' ">
+                and u.is_locked = '${filter.locked}'
+            </if>
+        </if>
+    </select>
+    <select id="getTotalNotFilteredCount" resultType="long">select count(1) from users where is_deleted = 0</select>
     <select id="getUserList" resultMap="BaseResultMap">
         select t.*,ur.role_id,r.name as role_name from
         (
@@ -51,30 +75,31 @@
         u.is_locked,u.last_login_at, u.created_at,u.updated_at
         from users u
         inner join organizations o on u.org_id = o.id
+        where u.is_deleted = 0
         <if test=" search != null and search != '' ">
             and (u.name like '%${search}%' or u.login_id or u.contact like '%${search}%'
             or o.name like '%${search}%') or u.email like '%${search}%')
         </if>
-        <if test=" loginId != null and loginId != '' ">
-            and u.login_id like '%${loginId}%'
-        </if>
-        <if test=" name != null and name != '' ">
-            and u.name like '%${name}%'
-        </if>
-        <if test=" orgName != null and orgName != '' ">
-            and o.name like '%${orgName}%'
-        </if>
-        <if test=" locked != null and locked != '' ">
-            and u.is_locked = '${locked}'
+        <if test=" filter != null ">
+            <if test=" filter.loginId != null and filter.loginId != '' ">
+                and u.login_id like '%${filter.loginId}%'
+            </if>
+            <if test=" filter.name != null and filter.name != '' ">
+                and u.name like '%${filter.name}%'
+            </if>
+            <if test=" filter.orgName != null and filter.orgName != '' ">
+                and o.name like '%${filter.orgName}%'
+            </if>
+            <if test=" filter.locked != null and filter.locked != '' ">
+                and u.is_locked = '${filter.locked}'
+            </if>
         </if>
         <if test=" sort != null and sort != '' ">
             order by ${sort} ${order}
         </if>
-        <if test=" offset != null and offset != '' ">
-            offset #{offset} ROWS fetch first #{limit} row only
-        </if>
+        offset #{offset} ROWS fetch first #{limit} row only
         ) t
         left join user_roles ur on t.id = ur.user_id
-        left join roles r on r.id = ur.role_id where is_deleted = 0
+        left join roles r on r.id = ur.role_id
     </select>
 </mapper>

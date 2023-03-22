@@ -1,10 +1,10 @@
 package tca.service.user;
 
-import java.util.List;
-
 import tca.entity.role.Role;
 import tca.entity.user.User;
 import tca.model.UserFilter;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -23,5 +23,7 @@ public interface UserService {
 
 	List<User> getUserList(UserFilter filter);
 
+    long getTotalCount(UserFilter filter);
 
+    long getTotalNotFilteredCount();
 }

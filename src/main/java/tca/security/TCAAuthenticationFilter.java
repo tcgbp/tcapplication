@@ -32,18 +32,14 @@ public class TCAAuthenticationFilter extends OncePerRequestFilter {
     private RestService restService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+        throws ServletException, IOException {
         String userId = request.getParameter("username");
         String password = request.getParameter("password");
-        String captcha = request.getParameter("captcha");
+
         if (StringUtils.hasLength(userId) && StringUtils.hasLength(password)) {
             try {
-                if(loginProperties.isEnableCaptcha()) {
-                    String captchaServer = (String) request.getSession().getAttribute(ApplicationConstants.IMAGE_CODE_SESSION);
-                    if (!captcha.equalsIgnoreCase(captchaServer)) {
-                        throw new BadCredentialsException("Captcha is not correct!");
-                    }
-                }
+                handleCaptcha(request);
 
                 User user = new User();
                 user.setLoginId(userId);
@@ -57,7 +53,8 @@ public class TCAAuthenticationFilter extends OncePerRequestFilter {
                         user = loginService.getUserByLoginId(userId);
                         UserPrincipal userPrincipal = new UserPrincipal(user);
                         SecurityContextHolder.getContext().setAuthentication(
-                            new UsernamePasswordAuthenticationToken(userPrincipal, encodedPassword, userPrincipal.getAuthorities()));
+                            new UsernamePasswordAuthenticationToken(
+                                userPrincipal, encodedPassword, userPrincipal.getAuthorities()));
                     } else {
                         throw new BadCredentialsException("Password is not correct!");
                     }
@@ -65,7 +62,8 @@ public class TCAAuthenticationFilter extends OncePerRequestFilter {
                     if (loginService.validateUser(user)) {
                         user = loginService.getUserByLoginId(userId);
                         UserPrincipal userPrincipal = new UserPrincipal(user);
-                        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userPrincipal, encodedPassword, userPrincipal.getAuthorities());
+                        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                            userPrincipal, encodedPassword, userPrincipal.getAuthorities());
                         SecurityContextHolder.getContext().setAuthentication(token);
                     } else {
                         throw new BadCredentialsException("Password is not correct!");
@@ -78,6 +76,16 @@ public class TCAAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    private void handleCaptcha(HttpServletRequest request) {
+        if(loginProperties.isEnableCaptcha()) {
+            String captcha = request.getParameter("captcha");
+            String captchaServer = (String) request.getSession().getAttribute(ApplicationConstants.IMAGE_CODE_SESSION);
+            if (!captcha.equalsIgnoreCase(captchaServer)) {
+                throw new BadCredentialsException("Captcha is not correct!");
+            }
+        }
     }
 
 }

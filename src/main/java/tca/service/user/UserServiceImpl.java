@@ -1,16 +1,15 @@
 package tca.service.user;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import tca.entity.role.Role;
 import tca.entity.user.User;
 import tca.mapper.role.RoleMapper;
 import tca.mapper.user.UserMapper;
 import tca.model.UserFilter;
+
+import java.util.HashSet;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -42,7 +41,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void deleteUserById(Long id) {
 		userMapper.deleteUserById(id);
-		// roleMapper.removeUserRoles(id);
 	}
 
 	@Override
@@ -56,9 +54,19 @@ public class UserServiceImpl implements UserService {
 	}
 
     @Override
+    public long getTotalCount(UserFilter filter) {
+        return userMapper.getTotalCount(filter);
+    }
+
+    @Override
+    public long getTotalNotFilteredCount() {
+        return userMapper.getTotalNotFilteredCount();
+    }
+
+    @Override
     public User getUserById(Long id) {
-        User user = userMapper.getUserById(id).get();
-        user.setRoles(roleMapper.getUserRolesByUserId(user.getLoginId()).stream().collect(Collectors.toSet()));
+        User user = userMapper.getUserById(id).orElseThrow();
+        user.setRoles(new HashSet<>(roleMapper.getUserRolesByUserId(user.getLoginId())));
         return user;
     }
 

@@ -1,16 +1,12 @@
 package tca;
 
-import org.springframework.context.annotation.Bean;
+import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import jakarta.annotation.Resource;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 import tca.entity.role.RoleConverter;
-import tca.model.UserFilterConverter;
+import tca.model.RequestConverter;
+import tca.model.UserConverter;
 
 @Configuration
 public class WebMVCConfig implements WebMvcConfigurer{
@@ -19,11 +15,15 @@ public class WebMVCConfig implements WebMvcConfigurer{
     private RoleConverter roleConverter;
 
     @Resource
-    private UserFilterConverter userfilterConverter;
+    private UserConverter userConverter;
+
+    @Resource
+    private RequestConverter requestConverter;
 
     @Override
     public void addFormatters (FormatterRegistry registry) {
         registry.addConverter(roleConverter);
-        registry.addConverter(userfilterConverter);
+        registry.addConverter(userConverter);
+        registry.addConverter(requestConverter);
     }
 }

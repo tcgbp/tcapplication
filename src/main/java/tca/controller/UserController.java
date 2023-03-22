@@ -1,9 +1,6 @@
 package tca.controller;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import jakarta.annotation.security.RolesAllowed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,23 +8,27 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import jakarta.annotation.security.RolesAllowed;
 import tca.common.helper.Helper;
+import tca.entity.role.Role;
 import tca.entity.user.User;
 import tca.mapper.dropdown.DropDownMapper;
+import tca.model.BootstrapTableData;
 import tca.model.UserFilter;
 import tca.security.UserPrincipal;
 import tca.service.login.LoginService;
 import tca.service.user.UserService;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Controller
 @RolesAllowed("ADMIN")
 public class UserController {
 
+    public static final String USER_MANAGEMENT = "user_management";
+    public static final String ORGANIZATIONS = "organizations";
     private Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
@@ -43,7 +44,7 @@ public class UserController {
     public String newUser(Model model, @AuthenticationPrincipal UserPrincipal user) {
         model.addAttribute("createdBy", user.getUser().getLoginId());
         model.addAttribute("roles", dropDownMapper.getRoles());
-        model.addAttribute("organizations", dropDownMapper.getOrganizations());
+        model.addAttribute(ORGANIZATIONS, dropDownMapper.getOrganizations());
         return "user_new";
     }
 
@@ -54,17 +55,17 @@ public class UserController {
             userService.addUser(user);
         else
             userService.updateUser(user);
-        return "user_management";
+        return USER_MANAGEMENT;
     }
 
     @RequestMapping("removeUsers")
     public String removeUser(@RequestParam("ids[]") Long[] ids) {
         Arrays.asList(ids).forEach(id -> {
-            log.info("deleting user id ?", id);
+            log.info("deleting user id {}", id);
             userService.deleteUserById(id);
-            log.info("deleted user id ?", id);
+            log.info("deleted user id {}", id);
         });
-        return "user_management";
+        return USER_MANAGEMENT;
     }
 
     @RequestMapping("user_edit")
@@ -72,35 +73,43 @@ public class UserController {
         User user = userService.getUserById(id);
         user.setUpdatedBy(userPrincipal.getUser().getLoginId());
         model.addAttribute("user", user);
-        List<String> selectedRoles = user.getRoles().stream().map(role->role.getName()).collect(Collectors.toList());
+        List<String> selectedRoles = user.getRoles().stream().map(Role::getName).toList();
         model.addAttribute("selectedRoles", selectedRoles);
         model.addAttribute("roles", dropDownMapper.getRoles());
-        model.addAttribute("organizations", dropDownMapper.getOrganizations());
+        model.addAttribute(ORGANIZATIONS, dropDownMapper.getOrganizations());
         return "user_edit";
     }
 
-    @RequestMapping("user_management")
+    @RequestMapping(USER_MANAGEMENT)
     public String admin(Model model) {
         log.info("Go to page user_management.html");
-        model.addAttribute("organizations", dropDownMapper.getOrganizations());
-        return "user_management";
+        model.addAttribute(ORGANIZATIONS, dropDownMapper.getOrganizations());
+        return USER_MANAGEMENT;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "users", headers = "Accept=application/json")
-    public @ResponseBody List<User> users(@RequestParam(value = "search", required = false) String search,
-                                          @RequestParam(value = "filter", required = false) UserFilter filter,
-                                          @RequestParam(value = "sort", required = false) String sort,
-                                          @RequestParam(value = "order", required = false) String order,
-                                          @RequestParam(value = "offset", required = false) Integer offset,
-                                          @RequestParam(value = "limit", required = false) Integer limit) {
-        if(filter==null){
-            filter = new UserFilter();
-        }
-        filter.setLimit(limit);
-        filter.setOffset(offset);
-        filter.setOrder(order);
-        filter.setSearch(search);
-        filter.setSort(sort);
-        return userService.getUserList(filter);
+    @RequestMapping(value = "users", headers = "Accept=application/json")
+    public @ResponseBody BootstrapTableData<User> users(@RequestParam(value = "search", required = false) String search,
+                                                        @RequestParam(value = "filter", required = false) User filter,
+                                                        @RequestParam(value = "sort", required = false) String sort,
+                                                        @RequestParam(value = "order", required = false) String order,
+                                                        @RequestParam(value = "offset", required = false) Integer offset,
+                                                        @RequestParam(value = "limit", required = false) Integer limit) {
+        UserFilter userFilter = new UserFilter();
+        userFilter.setFilter(filter);
+        userFilter.setLimit(limit);
+        userFilter.setOffset(offset);
+        userFilter.setOrder(order);
+        userFilter.setSearch(search);
+        userFilter.setSort(sort);
+        List<User> list = userService.getUserList(userFilter);
+
+        BootstrapTableData<User> btd = new BootstrapTableData<>();
+        btd.setRows(list);
+        if(list.isEmpty())
+            btd.setTotal(0);
+        else
+            btd.setTotal(userService.getTotalCount(userFilter));
+        btd.setTotalNotFiltered(userService.getTotalNotFilteredCount());
+        return btd;
     }
 }

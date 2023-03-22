@@ -21,9 +21,7 @@ public class PageBean<T> {
 	@SuppressWarnings("unused")
 	private boolean hasLast;
 
-	public PageBean() {
-		// TODO Auto-generated constructor stub
-	}
+	public PageBean() {}
 
 	public PageBean(int totalCount , List<T> list) {
 		this.totalCount = totalCount;
@@ -77,14 +75,14 @@ public class PageBean<T> {
 	}
 
 	public boolean isHasNext() {
-		return this.currentPage < this.totalPage ? true : false;
+		return this.currentPage < this.totalPage;
 	}
 	public void setHasNext(boolean hasNext) {
 		this.hasNext = hasNext;
 	}
 
 	public boolean isHasPre() {
-		return this.currentPage > 1 ? true : false;
+		return this.currentPage > 1;
 	}
 
 	public void setHasPre(boolean hasPre) {

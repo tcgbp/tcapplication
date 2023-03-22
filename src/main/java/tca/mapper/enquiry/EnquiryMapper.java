@@ -1,18 +1,17 @@
 package tca.mapper.enquiry;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import tca.entity.enquiry.Request;
+import tca.model.EnquiryFilter;
 
 import java.util.List;
 
 @Mapper
 public interface EnquiryMapper {
 
-    List<Request> getRequestList(@Param("search") String search, @Param("sort") String sort, @Param("order") String order,
-                                 @Param("offset") int offset, @Param("limit") int limit);
+    List<Request> getRequestList(EnquiryFilter filter);
 
-	long getTotalCount();
+	long getTotalCount(EnquiryFilter filter);
 
 	long getTotalNotFilteredCount();
 

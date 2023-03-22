@@ -9,20 +9,21 @@ import org.springframework.stereotype.Service;
 
 import tca.entity.enquiry.Request;
 import tca.mapper.enquiry.EnquiryMapper;
+import tca.model.EnquiryFilter;
 
 @Service
 public class EnquiryServiceImpl implements EnquiryService{
-	
+
 	Logger log = LoggerFactory.getLogger(EnquiryServiceImpl.class);
 
     @Autowired
     private EnquiryMapper mapper;
-    public List<Request> getRequestList(String search, String sort, String order, int offset, int limit) {
-        return mapper.getRequestList(search, sort, order, offset, limit);
+    public List<Request> getRequestList(EnquiryFilter filter) {
+        return mapper.getRequestList(filter);
     }
 	@Override
-	public long getTotalCount(String search) {
-		return mapper.getTotalCount();
+	public long getTotalCount(EnquiryFilter filter) {
+		return mapper.getTotalCount(filter);
 	}
 	@Override
 	public long getTotalNotFilteredCount() {

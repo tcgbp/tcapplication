@@ -26,7 +26,8 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/", "/webjars/**", "/favicon.ico", "/images/**", "/css/*", "/js/**", "/fonts/*");
+        return web -> web.ignoring().requestMatchers("/", "/webjars/**", "/favicon.ico", "/images/**",
+            "/css/*", "/js/**", "/fonts/*");
     }
 
     @Bean
@@ -39,7 +40,7 @@ public class SecurityConfig {
             .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedPage("/403.html"))
             .addFilterBefore(new SecurityContextPersistenceFilter(), UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(getTCAAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-            .authorizeHttpRequests((authz) -> authz
+            .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/enquiry/**").hasRole("ENQUIRY")
                 .requestMatchers("/report/**").hasRole("REPORT")

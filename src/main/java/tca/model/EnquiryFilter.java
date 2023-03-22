@@ -1,8 +1,8 @@
 package tca.model;
 
-import tca.entity.user.User;
+import tca.entity.enquiry.Request;
 
-public class UserFilter implements BootStrapTableSearchFilter<User> {
+public class EnquiryFilter implements BootStrapTableSearchFilter<Request> {
     public String getSearch() {
         return search;
     }
@@ -11,11 +11,11 @@ public class UserFilter implements BootStrapTableSearchFilter<User> {
         this.search = search;
     }
 
-    public User getFilter() {
+    public Request getFilter() {
         return filter;
     }
 
-    public void setFilter(User filter) {
+    public void setFilter(Request filter) {
         this.filter = filter;
     }
 
@@ -43,12 +43,6 @@ public class UserFilter implements BootStrapTableSearchFilter<User> {
         this.offset = offset;
     }
 
-    private String search;
-    private User filter;
-    private String sort;
-    private String order;
-    private Integer offset;
-
     public Integer getLimit() {
         return limit;
     }
@@ -57,5 +51,10 @@ public class UserFilter implements BootStrapTableSearchFilter<User> {
         this.limit = limit;
     }
 
+    private String search;
+    private Request filter;
+    private String sort;
+    private String order;
+    private Integer offset;
     private Integer limit;
 }
