@@ -11,7 +11,6 @@ import tca.model.UserFilter;
 
 @Mapper
 public interface UserMapper {
-    List<User> findAll();
 
     List<User> getUserList(UserFilter filter);
 

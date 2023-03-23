@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import tca.common.helper.Helper;
 import tca.entity.role.Role;
 import tca.entity.user.User;
-import tca.mapper.dropdown.DropDownMapper;
 import tca.model.BootstrapTableData;
 import tca.model.UserFilter;
 import tca.security.UserPrincipal;
+import tca.service.DropDownService;
 import tca.service.login.LoginService;
 import tca.service.user.UserService;
 
@@ -38,13 +38,13 @@ public class UserController {
     private LoginService loginService;
 
     @Autowired
-    private DropDownMapper dropDownMapper;
+    private DropDownService dropDownService;
 
     @RequestMapping("user_new")
     public String newUser(Model model, @AuthenticationPrincipal UserPrincipal user) {
         model.addAttribute("createdBy", user.getUser().getLoginId());
-        model.addAttribute("roles", dropDownMapper.getRoles());
-        model.addAttribute(ORGANIZATIONS, dropDownMapper.getOrganizations());
+        model.addAttribute("roles", dropDownService.getRoles());
+        model.addAttribute(ORGANIZATIONS, dropDownService.getOrganizations());
         return "user_new";
     }
 
@@ -75,15 +75,15 @@ public class UserController {
         model.addAttribute("user", user);
         List<String> selectedRoles = user.getRoles().stream().map(Role::getName).toList();
         model.addAttribute("selectedRoles", selectedRoles);
-        model.addAttribute("roles", dropDownMapper.getRoles());
-        model.addAttribute(ORGANIZATIONS, dropDownMapper.getOrganizations());
+        model.addAttribute("roles", dropDownService.getRoles());
+        model.addAttribute(ORGANIZATIONS, dropDownService.getOrganizations());
         return "user_edit";
     }
 
     @RequestMapping(USER_MANAGEMENT)
     public String admin(Model model) {
         log.info("Go to page user_management.html");
-        model.addAttribute(ORGANIZATIONS, dropDownMapper.getOrganizations());
+        model.addAttribute(ORGANIZATIONS, dropDownService.getOrganizations());
         return USER_MANAGEMENT;
     }
 

@@ -1,6 +1,5 @@
 package tca.service.user;
 
-import tca.entity.role.Role;
 import tca.entity.user.User;
 import tca.model.UserFilter;
 
@@ -13,11 +12,7 @@ public interface UserService {
 
 	void updateUser(User user);
 
-	List<User> getAll();
-
     User getUserById(Long id);
-
-    List<Role> getAllRoles();
 
 	void deleteUserById(Long id);
 

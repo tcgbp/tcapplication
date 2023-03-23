@@ -1,8 +1,8 @@
 package tca.service.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import tca.entity.role.Role;
 import tca.entity.user.User;
 import tca.mapper.role.RoleMapper;
 import tca.mapper.user.UserMapper;
@@ -44,35 +44,29 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> getAll() {
-		return userMapper.findAll();
-	}
-
-	@Override
+    @Cacheable("UserLists")
 	public List<User> getUserList(UserFilter filter) {
 		return userMapper.getUserList(filter);
 	}
 
     @Override
+    @Cacheable("UserTotalCount")
     public long getTotalCount(UserFilter filter) {
         return userMapper.getTotalCount(filter);
     }
 
     @Override
+    @Cacheable("UserTotalNotFilteredCount")
     public long getTotalNotFilteredCount() {
         return userMapper.getTotalNotFilteredCount();
     }
 
     @Override
+    @Cacheable("Users")
     public User getUserById(Long id) {
         User user = userMapper.getUserById(id).orElseThrow();
         user.setRoles(new HashSet<>(roleMapper.getUserRolesByUserId(user.getLoginId())));
         return user;
-    }
-
-    @Override
-    public List<Role> getAllRoles() {
-        return roleMapper.getAll();
     }
 
 }

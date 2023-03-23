@@ -26,11 +26,6 @@
         u.is_locked,u.last_login_at,u.created_at,u.updated_at
         from users u,organizations o where u.org_id = o.id and u.id = #{id} and u.is_deleted = 0
     </select>
-    <select id="findAll" resultMap="BaseResultMap">select
-        u.id,u.login_id,u.name,u.org_id,o.name as org_name,u.contact,u.email,u.password,u.is_deleted,
-        u.is_locked,u.last_login_at,u.created_at,u.updated_at
-        from users u,organizations o where u.org_id = o.id and is_deleted = 0
-    </select>
     <update id="deleteUserById" parameterType="long">update users set is_deleted = 1 where id = #{id}</update>
     <insert id="addUser" parameterType="tca.entity.user.User" keyProperty="id">
         insert into users (id, name,org_id,login_id, email, password, contact, is_deleted, created_by)
